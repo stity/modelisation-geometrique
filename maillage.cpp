@@ -113,6 +113,11 @@ void Maillage::flipArrete(int triangleA, int triangleB) {
     this->triangles[triangleB].triangles[1] = triangleA;
     this->triangles[triangleB].triangles[2] = triangle3;
 
+    this->sommets[a].triangle = triangleA;
+    this->sommets[b].triangle = triangleB;
+    this->sommets[c].triangle = triangleA;
+    this->sommets[d].triangle = triangleA;
+
 }
 
 bool Maillage::divideTriangle(int sommet, int triangle) {
@@ -146,5 +151,47 @@ bool Maillage::divideTriangle(int sommet, int triangle) {
     this->triangles[t2].triangles[1] = t2;
     this->triangles[t2].triangles[2] = triangleVoisin1;
 
+    this->sommets[sommet].triangle = triangle;
+    this->sommets[a].triangle = triangle;
+    this->sommets[b].triangle = triangle;
+    this->sommets[c].triangle = t1;
+
     return true;
+}
+
+void Maillage::addPoint(float x, float y, float z) {
+    Sommet s;
+    s.setPosition(x,y,z);
+    this->sommets.push_back(s);
+    int index = this->sommets.size()-1;
+    if (index <2) {
+        return;
+    }
+    else if (index == 2) {
+        Triangle T;
+        //cherche le sens direct du triangle
+        if(this->seeArrete(0,1,2)) {
+            T.setSommets(0,1,2);
+        }
+        else {
+            T.setSommets(0,2,1);
+        }
+        this->triangles.push_back(T);
+        this->sommets[0].triangle = 0;
+        this->sommets[1].triangle = 0;
+        this->sommets[2].triangle = 0;
+        return;
+    }
+    int i;
+    bool found = false;
+    for (i = 0; i < this->triangles.size(); i++) {
+        if(this->isInTrianle(index, i)) {
+            found = true;
+            break;
+        }
+    }
+    if(found) {
+        this->divideTriangle(index, i);
+    }
+
 }
