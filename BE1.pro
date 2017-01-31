@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,12 +17,16 @@ SOURCES += main.cpp\
     sommet.cpp \
     triangle.cpp \
     loader.cpp \
-    maillage.cpp
+    maillage.cpp \
+    gasket.cpp \
+    gldisplay.cpp
 
 HEADERS  += mainwindow.h \
     sommet.h \
     triangle.h \
     loader.h \
-    maillage.h
+    maillage.h \
+    gasket.h \
+    gldisplay.h
 
 FORMS    += mainwindow.ui

@@ -5,6 +5,7 @@ Maillage::Maillage(int nbsommets, int nbtriangles)
 {
     this->sommets = QVector<Sommet>(nbsommets);
     this->triangles = QVector<Triangle>(nbtriangles);
+    this->infiniteSommet = -1;
 }
 
 void Maillage::addTriangle(int index, int i, int j, int k) {
@@ -47,10 +48,10 @@ void Maillage::parseMap() {
 }
 
 bool Maillage::seeArrete(int index, int a, int b) {
-    float abx = this->sommets[a].position[0] - this->sommets[b].position[0];
-    float aby = this->sommets[a].position[1] - this->sommets[b].position[1];
-    float apx = this->sommets[a].position[0] - this->sommets[index].position[0];
-    float apy = this->sommets[a].position[1] - this->sommets[index].position[1];
+    float abx = this->sommets[b].position[0] - this->sommets[a].position[0];
+    float aby = this->sommets[b].position[1] - this->sommets[a].position[1];
+    float apx = this->sommets[index].position[0] - this->sommets[a].position[0];
+    float apy = this->sommets[index].position[1] - this->sommets[a].position[1];
     return abx*apy-aby*apx >= 0;
 }
 
@@ -61,11 +62,11 @@ bool Maillage::isInTrianle(int pointIndex, int triangleIndex) {
     for (int i = 0; i<3; i++) {
         a = this->triangles[triangleIndex].sommets[i];
         b = this->triangles[triangleIndex].sommets[(i+1)%3];
-        abx = this->sommets[a].position[0] - this->sommets[b].position[0];
-        aby = this->sommets[a].position[1] - this->sommets[b].position[1];
-        apx = this->sommets[a].position[0] - this->sommets[pointIndex].position[0];
-        apy = this->sommets[a].position[1] - this->sommets[pointIndex].position[1];
-        result = result && (abx*apy-aby*apx < 0);
+        abx = this->sommets[b].position[0] - this->sommets[a].position[0];
+        aby = this->sommets[b].position[1] - this->sommets[a].position[1];
+        apx = this->sommets[pointIndex].position[0] - this->sommets[a].position[0];
+        apy = this->sommets[pointIndex].position[1] - this->sommets[a].position[1];
+        result = result && (abx*apy-aby*apx >= 0);
     }
     return result;
 }

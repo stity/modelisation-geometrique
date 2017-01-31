@@ -13,6 +13,7 @@ public:
     QVector<Sommet> sommets;
     QVector<Triangle> triangles;
     QMap<QPair<int, int>, QVector<int> > map;
+    int infiniteSommet;
     void addSommet(int index, float x, float y, float z);
     void addTriangle(int index, int i, int j, int k);
     void parseMap();
